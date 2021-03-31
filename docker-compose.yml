@@ -1,13 +1,13 @@
 version: "3.2"
 services:
   app:
-    command: node src/server.js
+    command: npm start
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - published: ${APP_PORT:-3000}
-        target: 3000
+        target: ${APP_PORT:-3000}
     volumes:
       - .:/app/
     environment:
