@@ -1,49 +1,24 @@
-import express, { ErrorRequestHandler, Request, NextFunction, Response } from 'express';
-import bodyParser from 'body-parser';
-import { authFactory, AuthError } from './auth';
+import * as express from 'express';
+import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
+import * as swaggerJsdoc from 'swagger-jsdoc';
+import * as swaggerUi from 'swagger-ui-express';
+
+import options from './swagger';
+import moviesRouter from './controllers/movies/movies.router';
 
 dotenv.config();
-const { JWT_SECRET } = process.env;
-
-if (!JWT_SECRET) {
-    throw new Error("Missing JWT_SECRET env var. Set it and restart the server");
-}
-
-const auth = authFactory(JWT_SECRET);
 const app = express();
 
 app.use(bodyParser.json());
 
-app.get('/', (req: Request, res: Response,) => {
-    res.send('Hi there.')
-})
+app.use(moviesRouter);
 
-app.post("/auth", (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body) {
-        return res.status(400).json({ error: "invalid payload" });
-    }
+const specs = swaggerJsdoc(options);
+app.use('/', swaggerUi.serve, swaggerUi.setup(specs));
 
-    const { username, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ error: "invalid payload" });
-    }
-
-    try {
-        const token = auth(username, password);
-
-        return res.status(200).json({ token });
-    } catch (error) {
-        if (error instanceof AuthError) {
-            return res.status(401).json({ error: error.message });
-        }
-
-        next(error);
-    }
-});
-
-app.use((error: ErrorRequestHandler, _: any, res: Response, __: any) => {
+app.use((error: express.ErrorRequestHandler, _: any, res: express.Response, __: any) => {
     console.error(
         `Error processing request ${error}. See next message for details`
     );

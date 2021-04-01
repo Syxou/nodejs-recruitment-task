@@ -40,3 +40,12 @@ export const authFactory = (secret: string) => (username: string, password: stri
         }
     );
 };
+
+
+const { JWT_SECRET } = process.env;
+
+if (!JWT_SECRET) {
+    throw new Error("Missing JWT_SECRET env var. Set it and restart the server");
+}
+
+export const auth = authFactory(JWT_SECRET);

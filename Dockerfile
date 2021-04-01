@@ -1,6 +1,8 @@
 FROM node:14.15-alpine
 
-WORKDIR /app
+WORKDIR "/app"
 COPY ./package*.json  ./
 RUN npm i
 COPY . .
+
+CMD ["npm", "run", "dev"]
