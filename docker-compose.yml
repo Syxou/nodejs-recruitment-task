@@ -1,7 +1,7 @@
 version: "3.2"
+
 services:
   app:
-    command: npm start
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,6 +9,32 @@ services:
       - published: ${APP_PORT:-3000}
         target: ${APP_PORT:-3000}
     volumes:
-      - .:/app/
+      - /app/node_modules
+      - .:/app
+    links:
+      - mysql
+    # command: npm run seed:run
     environment:
+      DB_HOST: mysql
       JWT_SECRET: ${JWT_SECRET}
+      APP_PORT: ${APP_PORT}
+      TYPEORM_CONNECTION: "mysql"
+      TYPEORM_HOST: mysql
+      TYPEORM_USERNAME: "admin"
+      TYPEORM_PASSWORD: "admin"
+      TYPEORM_DATABASE: "movies"
+      TYPEORM_PORT: "3306"
+      TYPEORM_ENTITIES: "src/**/*.entity.{.ts,.js}"
+      TYPEORM_SEEDING_FACTORIES: "src/factories/**/*{.ts,.js}"
+      TYPEORM_SEEDING_SEEDS: "src/seeds/**/*{.ts,.js}"
+
+  mysql:
+    image: "mysql:5.7.24"
+    container_name: "typeorm-mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "admin"
+      MYSQL_DATABASE: "movies"
