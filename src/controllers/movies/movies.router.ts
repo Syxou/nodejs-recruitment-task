@@ -1,9 +1,10 @@
 import { Router, Response, Request } from 'express';
+import { validate } from '../../middlewares/validate';
 import { getAllMovies } from './movies.service';
 
 const router = Router();
 
-router.get('/movies', async (req: Request, res: Response) => {
+router.get('/movies', validate, async (req: Request, res: Response) => {
     res.send(await getAllMovies());
 });
 
