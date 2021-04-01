@@ -4,7 +4,6 @@ import { Connection, createConnection } from "typeorm";
 class Connect {
     public connections: Connection;
     run = async () => {
-        console.log(`${__dirname}**/*.entity.{ts,js}`);
         this.connections = await createConnection({
             type: "mysql",
             host: process.env.DB_HOST,
