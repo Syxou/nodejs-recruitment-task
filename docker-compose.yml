@@ -13,6 +13,7 @@ services:
       - .:/app
     links:
       - mysql
+    # command: npm run seed:run
     environment:
       DB_HOST: mysql
       JWT_SECRET: ${JWT_SECRET}

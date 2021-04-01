@@ -24,9 +24,11 @@ export const authFactory = (secret: string) => async (username: string, password
     // const user = users.find((u) => u.username === username);
 
     const user = await getUser({ username });
-    const passwordValidate = await user.validatePassword(user.password)
-    console.log(passwordValidate)
-    if (!user || passwordValidate) {
+    const passwordValidate = await user.validatePassword(password)
+        .catch(err => {
+            throw new AuthError("invalid username or password");
+        })
+    if (!user || !passwordValidate) {
         throw new AuthError("invalid username or password");
     }
 

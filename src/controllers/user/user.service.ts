@@ -6,6 +6,5 @@ interface IUserParam {
 
 export const getUser = async (param: IUserParam): Promise<User> => {
     const user = await User.findOne(param);
-    console.log(user);
     return user;
 }

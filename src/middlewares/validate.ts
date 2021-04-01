@@ -20,7 +20,6 @@ export const validate = (req: Request, res: Response, next: NextFunction) => {
         const token = authorization.split(' ')[1];
         const decoded = jwt.verify(token, JWT_SECRET);
         req.payload = decoded as IJsonPayload;
-        console.log(req.payload);
         next();
     } catch (error) {
         res.sendStatus(401);

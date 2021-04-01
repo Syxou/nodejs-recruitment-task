@@ -1,0 +1,73 @@
+paths:
+  /classes:
+    get:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      responses:
+        200:
+          description: All Movies for user 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movies:
+                    type: array
+                    items:
+                      $ref: "#/definitions/arrayMovies"
+    post:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+      description: "Aded movie to user by title"
+      produces:
+        - application/json
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+      responses:
+        200:
+          description: OK
+          context:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: A user with the specified ID was not found.
+          context: 
+            text/plain:
+              schema:
+                type: string
+        500:
+          description: Unexpected error.
+          context:
+            text/plain:
+              schema:
+                type: string
+definitions:
+  arrayMovies:
+    type: object
+    properties:
+      id:
+        type: number
+      title:
+        type: string
+      released:
+        type: string
+      genre:
+        type: string
+      directory:
+        type: string
+      createTime:
+        type: string

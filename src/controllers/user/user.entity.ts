@@ -23,12 +23,6 @@ export class User extends BaseEntity {
     @Column()
     name: string;
 
-    @Column({ type: 'timestamp', nullable: true })
-    lastMountRelease: string;
-
-    @Column({ default: 0 })
-    countRelease: number;
-
     @OneToMany(() => Movies, movie => movie.user)
     movies: Movies[];
 
