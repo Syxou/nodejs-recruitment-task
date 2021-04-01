@@ -14,7 +14,6 @@ export default class CreateUsers implements Seeder {
         const basicSalt = await bcrypt.genSalt();
         const basicPassword = await bcrypt.hash("sR-_pcoow-27-6PAwCD8", basicSalt);
 
-
         const PremiumRole = "premium";
         const PremiumName = "Premium Jim";
         const PremiumUsername = "premium-jim";
