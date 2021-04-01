@@ -5,13 +5,6 @@ import { User } from "../user/user.entity";
 import { Movies } from "./movies.entity";
 import MoviesRepository from "./movies.repository";
 
-interface IMovieFath extends AxiosResponse {
-    Title: string,
-    Released: string,
-    Genre: string,
-    Directory: string
-}
-
 export const getAllMoviesByUser = async ({ id }: User, title?: string): Promise<Movies[] | Movies> => {
     const moviesRepo = getCustomRepository(MoviesRepository);
     if (title) {

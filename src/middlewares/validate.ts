@@ -13,7 +13,6 @@ if (!JWT_SECRET) {
 export const validate = (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
     if (!authorization) {
-        console.log('!authorization)')
         res.sendStatus(403);
     }
     try {

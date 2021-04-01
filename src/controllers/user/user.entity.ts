@@ -26,7 +26,6 @@ export class User extends BaseEntity {
     @OneToMany(() => Movies, movie => movie.user)
     movies: Movies[];
 
-
     async validatePassword(password: string): Promise<boolean> {
         const hash = await bcrypt.hash(password, this.salt);
         return hash === this.password;

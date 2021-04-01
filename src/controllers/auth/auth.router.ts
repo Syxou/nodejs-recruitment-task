@@ -4,7 +4,6 @@ import { AuthError, auth } from './auth.service';
 const router = Router();
 
 router.post("/auth", async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body)
     if (!req.body) {
         return res.status(400).json({ error: "invalid payload" });
     }
@@ -17,11 +16,13 @@ router.post("/auth", async (req: Request, res: Response, next: NextFunction) => 
 
     try {
         const token = await auth(username, password);
-
-        return res.status(200).json({ token });
+        if (token.error) {
+            return res.status(token.status).send(token.message)
+        }
+        return res.status(200).send(token);
     } catch (error) {
         if (error instanceof AuthError) {
-            return res.status(401).json({ error: error.message });
+            return res.status(401).send(error);
         }
 
         next(error);

@@ -24,27 +24,46 @@ export const authFactory = (secret: string) => async (username: string, password
     // const user = users.find((u) => u.username === username);
 
     const user = await getUser({ username });
+
+    if (!user) {
+        return {
+            error: true,
+            message: "invalid username or password",
+            status: 401
+        }
+    }
     const passwordValidate = await user.validatePassword(password)
         .catch(err => {
-            throw new AuthError("invalid username or password");
+            return {
+                error: true,
+                message: "invalid username or password",
+                status: 401
+            }
         })
-    if (!user || !passwordValidate) {
-        throw new AuthError("invalid username or password");
+
+    if (!passwordValidate) {
+        return {
+            error: true,
+            message: "invalid username or password",
+            status: 401
+        }
     }
 
-    return jwt.sign(
-        {
-            userId: user.id,
-            name: user.name,
-            role: user.role,
-        },
-        secret,
-        {
-            issuer: "https://www.netguru.com/",
-            subject: `${user.id}`,
-            expiresIn: 30 * 60,
-        }
-    );
+    return {
+        json: jwt.sign(
+            {
+                userId: user.id,
+                name: user.name,
+                role: user.role,
+            },
+            secret,
+            {
+                issuer: "https://www.netguru.com/",
+                subject: `${user.id}`,
+                expiresIn: 30 * 60,
+            }
+        )
+    }
 };
 
 const { JWT_SECRET } = process.env;

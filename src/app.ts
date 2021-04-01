@@ -22,11 +22,9 @@ const specs = swaggerJsdoc(options);
 app.use('/', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((error: express.ErrorRequestHandler, _: any, res: express.Response, __: any) => {
-    console.error(
+    console.log(
         `Error processing request ${error}. See next message for details`
     );
-    console.error(error);
-
     return res.status(500).json({ error: "internal server error" });
 });
 
