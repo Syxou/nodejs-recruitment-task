@@ -6,13 +6,16 @@ import * as swaggerUi from 'swagger-ui-express';
 
 import options from './swagger';
 import moviesRouter from './controllers/movies/movies.router';
+import authRouter from './controllers/auth/auth.router';
 
 dotenv.config();
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(moviesRouter);
+app.use(authRouter);
 
 const specs = swaggerJsdoc(options);
 app.use('/', swaggerUi.serve, swaggerUi.setup(specs));

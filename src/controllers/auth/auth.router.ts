@@ -1,11 +1,10 @@
 import { Router, Response, Request, NextFunction } from 'express';
-import { AuthError } from './auth.service';
+import { AuthError, auth } from './auth.service';
 
 const router = Router();
 
-
-
-router.post("/auth", (req: Request, res: Response, next: NextFunction) => {
+router.post("/auth", async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body)
     if (!req.body) {
         return res.status(400).json({ error: "invalid payload" });
     }
@@ -17,7 +16,7 @@ router.post("/auth", (req: Request, res: Response, next: NextFunction) => {
     }
 
     try {
-        const token = auth(username, password);
+        const token = await auth(username, password);
 
         return res.status(200).json({ token });
     } catch (error) {

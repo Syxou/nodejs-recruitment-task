@@ -17,6 +17,15 @@ services:
       DB_HOST: mysql
       JWT_SECRET: ${JWT_SECRET}
       APP_PORT: ${APP_PORT}
+      TYPEORM_CONNECTION: "mysql"
+      TYPEORM_HOST: mysql
+      TYPEORM_USERNAME: "admin"
+      TYPEORM_PASSWORD: "admin"
+      TYPEORM_DATABASE: "movies"
+      TYPEORM_PORT: "3306"
+      TYPEORM_ENTITIES: "src/**/*.entity.{.ts,.js}"
+      TYPEORM_SEEDING_FACTORIES: "src/factories/**/*{.ts,.js}"
+      TYPEORM_SEEDING_SEEDS: "src/seeds/**/*{.ts,.js}"
 
   mysql:
     image: "mysql:5.7.24"

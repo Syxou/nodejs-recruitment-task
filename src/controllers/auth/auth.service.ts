@@ -1,4 +1,5 @@
-const jwt = require("jsonwebtoken");
+import * as jwt from 'jsonwebtoken';
+import { getUser } from '../user/user.service';
 
 const users = [
     {
@@ -19,10 +20,13 @@ const users = [
 
 export class AuthError extends Error { }
 
-export const authFactory = (secret: string) => (username: string, password: string) => {
-    const user = users.find((u) => u.username === username);
+export const authFactory = (secret: string) => async (username: string, password: string) => {
+    // const user = users.find((u) => u.username === username);
 
-    if (!user || user.password !== password) {
+    const user = await getUser({ username });
+    const passwordValidate = await user.validatePassword(user.password)
+    console.log(passwordValidate)
+    if (!user || passwordValidate) {
         throw new AuthError("invalid username or password");
     }
 
@@ -40,7 +44,6 @@ export const authFactory = (secret: string) => (username: string, password: stri
         }
     );
 };
-
 
 const { JWT_SECRET } = process.env;
 
