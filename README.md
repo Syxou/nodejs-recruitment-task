@@ -51,6 +51,11 @@ the default value by setting the `APP_PORT` env var
 APP_PORT=8081 JWT_SECRET=secret docker-compose up -d
 ```
 
+In docker app container write this command, to add users in database
+```
+npm run seed:run
+```
+
 To stop the authorization service run
 
 ```
